@@ -1,18 +1,18 @@
-import Navbar from "./components/Navbar"
-import { BrowserRouter, Route } from "react-router"
+import { BrowserRouter, Routes, Route } from "react-router"
 import LevelsPage from "./pages/LevelsPage"
+import SignInPage from "./pages/SignInPage"
+import AboutPage from "./pages/About"
 
 function App() {
 
   return (
-    <div className="flex flex-col w-full h-full bg-stone-900">
-      <Navbar />
-        <div className="flex flex-col max-width-[1280] h-full w-full">
-          <BrowserRouter>
-            <Route path="/" element={<LevelsPage />}/>
-          </BrowserRouter>
-        </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LevelsPage/>}/>
+        <Route path="/sign-in" element={<SignInPage/>}/>
+        <Route path="/about" element={<AboutPage/>}/>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
