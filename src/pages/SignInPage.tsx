@@ -1,7 +1,7 @@
 import AppShell from "../AppShell.tsx";
 
 function SignInPage() {
-  return <AppShell></AppShell> 
+  return <AppShell><></></AppShell> 
 }
 
 export default SignInPage;
