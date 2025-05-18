@@ -1,4 +1,4 @@
-import type { Level } from "../types";
+import type { Level } from "../../types";
 import LevelCard from "./LevelCard";
 
 function LevelsGrid({ levels }: { levels: Level[] }) {

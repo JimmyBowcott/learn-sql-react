@@ -1,4 +1,4 @@
-import type { Level } from "../types";
+import type { Level } from "../../types";
 import { useNavigate } from "react-router";
 
 function LevelCard({ level }: { level: Level }) {

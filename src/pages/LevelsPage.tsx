@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import AppShell from "../AppShell.tsx";
 import api from "../api.ts";
-import LoadingSpinner from "../components/LoadingSpinner.tsx";
+import LoadingSpinner from "../components/utility/LoadingSpinner.tsx";
 import type { Level } from "../types.ts";
 import LevelPage from "./LevelPage.tsx";
-import LevelsGrid from "../components/LevelsGrid.tsx";
+import LevelsGrid from "../components/cards/LevelsGrid.tsx";
 
 function LevelsPage() {
   const [levels, setLevels] = useState<Level[]>([]);
