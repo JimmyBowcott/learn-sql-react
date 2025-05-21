@@ -15,7 +15,7 @@ function LevelPage({ level }: { level: Level }) {
       </div>
       <div className="flex flex-col gap-2 w-full">
         <div className="flex flex-row w-full">
-          <Commands />
+          <Commands commands={level.commands} />
           <QueryBox />
           <Tables />
         </div>
