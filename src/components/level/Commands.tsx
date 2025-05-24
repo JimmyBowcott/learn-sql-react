@@ -40,7 +40,7 @@ function Commands({ commands }: { commands: Record<string, string[]> }) {
   }
 
   return (
-    <div className="flex flex-col p-4 gap-2 border-1 border-slate-600">
+    <div className="flex flex-col p-4 gap-2 border-1 border-stone-600">
       <div className="flex gap-2">{tabs}</div>
       <div className="flex justify-around">
         <p className={`${canDecrementSubTab ? "cursor-pointer" : "text-gray-500"}`} onClick={canDecrementSubTab ? ()=>decrementSubTab() : undefined}>{"<"}</p>

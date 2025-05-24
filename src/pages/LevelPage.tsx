@@ -17,7 +17,7 @@ function LevelPage({ level }: { level: Level }) {
         <div className="flex flex-row w-full">
           <Commands commands={level.commands} />
           <QueryBox />
-          <Tables />
+          <Tables tables={level.tables} />
         </div>
         <ButtonRow />
       </div>
