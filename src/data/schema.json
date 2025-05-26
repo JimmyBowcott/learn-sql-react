@@ -1,0 +1,80 @@
+{
+  "tables": [
+    {
+      "name": "generation",
+      "columns": [
+        { "name": "id", "schema": "integer" },
+        { "name": "name", "schema": "text" },
+        { "name": "main_region", "schema": "text" }
+      ]
+    },
+    {
+      "name": "pokemon",
+      "columns": [
+        { "name": "id", "schema": "integer" },
+        { "name": "name", "schema": "text" },
+        { "name": "height", "schema": "integer" },
+        { "name": "weight", "schema": "integer" },
+        { "name": "base_experience", "schema": "integer" },
+        { "name": "generation_id", "schema": "integer" },
+        { "name": "is_legendary", "schema": "boolean" },
+        { "name": "is_mythical", "schema": "boolean" }
+      ]
+    },
+    {
+      "name": "type",
+      "columns": [
+        { "name": "id", "schema": "integer" },
+        { "name": "name", "schema": "text" },
+        { "name": "generation_id", "schema": "integer" }
+      ]
+    },
+    {
+      "name": "pokemon_type",
+      "columns": [
+        { "name": "pokemon_id", "schema": "integer" },
+        { "name": "type_id", "schema": "integer" },
+        { "name": "slot", "schema": "integer" }
+      ]
+    },
+    {
+      "name": "stat",
+      "columns": [
+        { "name": "id", "schema": "integer" },
+        { "name": "name", "schema": "text" }
+      ]
+    },
+    {
+      "name": "pokemon_stat",
+      "columns": [
+        { "name": "pokemon_id", "schema": "integer" },
+        { "name": "stat_id", "schema": "integer" },
+        { "name": "base_stat", "schema": "integer" }
+      ]
+    },
+    {
+      "name": "evolution",
+      "columns": [
+        { "name": "from_pokemon_id", "schema": "integer" },
+        { "name": "to_pokemon_id", "schema": "integer" }
+      ]
+    },
+    {
+      "name": "ability",
+      "columns": [
+        { "name": "id", "schema": "integer" },
+        { "name": "name", "schema": "text" },
+        { "name": "generation_id", "schema": "integer" }
+      ]
+    },
+    {
+      "name": "pokemon_ability",
+      "columns": [
+        { "name": "pokemon_id", "schema": "integer" },
+        { "name": "ability_id", "schema": "integer" },
+        { "name": "is_hidden", "schema": "boolean" },
+        { "name": "slot", "schema": "integer" }
+      ]
+    }
+  ]
+}

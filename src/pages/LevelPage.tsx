@@ -1,8 +1,7 @@
-import ButtonRow from "../components/level/ButtonRow.tsx";
-import Commands from "../components/level/Commands.tsx";
+import { IconPlayerPlayFilled } from "@tabler/icons-react";
 import QueryBox from "../components/level/QueryBox.tsx";
 import QueryResult from "../components/level/QueryResult.tsx";
-import Tables from "../components/level/Tables.tsx";
+import Schema from "../components/level/Schema.tsx";
 import type { Level } from "../types.ts";
 
 function LevelPage({ level }: { level: Level }) {
@@ -15,11 +14,10 @@ function LevelPage({ level }: { level: Level }) {
       </div>
       <div className="flex flex-col gap-2 w-full">
         <div className="flex flex-row w-full">
-          <Commands commands={level.commands} />
           <QueryBox />
-          <Tables tables={level.tables} />
+          <Schema tables={level.tables} />
         </div>
-        <ButtonRow />
+        <button className="mr-auto cursor-pointer"><IconPlayerPlayFilled /></button>
       </div>
       <QueryResult />
     </div>
