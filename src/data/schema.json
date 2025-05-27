@@ -76,5 +76,25 @@
         { "name": "slot", "schema": "integer" }
       ]
     }
+  ],
+  "order": [
+    "id",
+    "name",
+    "height",
+    "weight",
+    "base_experience",
+    "main_region",
+    "generation_id",
+    "is_legendary",
+    "is_mythical",
+    "pokemon_id",
+    "type_id",
+    "slot",
+    "stat_id",
+    "base_stat",
+    "from_pokemon_id",
+    "to_pokemon_id",
+    "ability_id",
+    "is_hidden"
   ]
 }
