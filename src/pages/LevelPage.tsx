@@ -36,7 +36,7 @@ function LevelPage({ level }: { level: Level }) {
   }
 
   return (
-    <div className="flex flex-col gap-8 max-w-[900px] w-full h-full items-center">
+    <div className="flex flex-col gap-8 max-w-[900px] w-full items-center">
       <div className="flex flex-col items-center">
         <h1 className="text-2xl font-bold">Level {level.id}</h1>
         <p>{level.description}</p>

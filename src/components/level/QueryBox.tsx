@@ -7,7 +7,7 @@ function QueryBox({text, setText}: {text: string, setText: Dispatch<SetStateActi
       spellCheck={false}
       autoCorrect="off"
       autoCapitalize="off"
-      className="grow border-1 border-stone-600 w-full min-h-96 p-4 focus:outline-none"
+      className="grow border-1 border-stone-600 w-full h-84 p-4 focus:outline-none"
       value={text}
       onChange={(e: any)=>setText(e.target.value)}>
     </textarea>
