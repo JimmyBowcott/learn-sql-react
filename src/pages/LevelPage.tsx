@@ -22,8 +22,12 @@ function LevelPage({ level }: { level: Level }) {
     try {
       const res = await api.post("/exec", query, { headers: { "Content-Type": "text/plain" } })
       return res.data
-    } catch {
-      return "An error has occured. Please try again later."
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        return error.response.data
+      } else {
+        return "An error has occured. Please try again later."
+      }
     }
   }
 
