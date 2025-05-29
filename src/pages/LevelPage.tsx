@@ -5,11 +5,18 @@ import Schema from "../components/level/Schema.tsx";
 import type { Level } from "../types.ts";
 import { useState } from "react";
 import api from "../api.ts";
+import { useAuth } from "../context/AuthContext.tsx";
+
+interface ApiResponse {
+  success: boolean,
+  result: any
+}
 
 function LevelPage({ level }: { level: Level }) {
   const [lastQuery, setLastQuery] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [result, setResult] = useState<any>("");
+  const { unlockedLevel, setUnlockedLevel } = useAuth();
 
   const validateQuery = () => {
     if (!query.endsWith(";")) {
@@ -36,8 +43,11 @@ function LevelPage({ level }: { level: Level }) {
     setLastQuery(query);
     if (validateQuery()) {
       setResult("");
-      const res = await sendQuery();
-      setResult(res);
+      const res: ApiResponse = await sendQuery();
+      setResult(res.result);
+      if (res.success) {
+        setUnlockedLevel(Math.max(unlockedLevel, level.id+1));
+      }
     }
   }
 
