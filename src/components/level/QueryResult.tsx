@@ -46,21 +46,25 @@ function QueryResult({ res }: { res: any }) {
         {errorMessage.length > 0 && <p>{errorMessage}</p>}
         {errorMessage.length === 0 &&
           <table className="table-auto border border-stone-300 text-sm flex-1 mx-auto">
-            <tr>
-              {headers.map((header, key) =>
-                <th className="border border-stone-300 px-2 py-1" key={`h-${key}`}>{header}</th>
-              )}
-            </tr>
-            {Array.isArray(res) && res.map((row: any, i: number) => (
+            <thead>
               <tr>
-              {
-                headers.map((header, key) => (
-                  <td className="border border-stone-300 px-2 py-1" key={`row-${i}-${key}`}>{String(row[header])}</td>
-                ))
-              }
+                {headers.map((header, key) =>
+                  <th className="border border-stone-300 px-2 py-1" key={`h-${key}`}>{header}</th>
+                )}
               </tr>
-            ))
-            }
+            </thead>
+            <tbody>
+              {Array.isArray(res) && res.map((row: any, i: number) => (
+                <tr key={`row-${i}`}>
+                {
+                  headers.map((header, key) => (
+                    <td className="border border-stone-300 px-2 py-1" key={`row-${i}-${key}`}>{String(row[header])}</td>
+                  ))
+                }
+                </tr>
+              ))
+              }
+            </tbody>
           </table>
         }
       </div>

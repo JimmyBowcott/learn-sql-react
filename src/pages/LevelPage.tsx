@@ -7,6 +7,7 @@ import { useState } from "react";
 import api from "../api.ts";
 
 function LevelPage({ level }: { level: Level }) {
+  const [lastQuery, setLastQuery] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [result, setResult] = useState<any>("");
 
@@ -20,7 +21,7 @@ function LevelPage({ level }: { level: Level }) {
 
   const sendQuery = async () => {
     try {
-      const res = await api.post("/exec", query, { headers: { "Content-Type": "text/plain" } })
+      const res = await api.post("/submit", { query, level: level.id })
       return res.data
     } catch (error: any) {
       if (error.response.status === 400) {
@@ -32,8 +33,9 @@ function LevelPage({ level }: { level: Level }) {
   }
 
   const submit = async () => {
-    setResult("");
+    setLastQuery(query);
     if (validateQuery()) {
+      setResult("");
       const res = await sendQuery();
       setResult(res);
     }
@@ -50,9 +52,13 @@ function LevelPage({ level }: { level: Level }) {
           <QueryBox text={query} setText={setQuery} />
           <Schema tables={level.tables} />
         </div>
-        <button className="mr-auto cursor-pointer" onClick={()=>submit()}><IconPlayerPlayFilled /></button>
+        <button
+          className={`mr-auto cursor-pointer ${query === lastQuery ? "text-stone-600" : ""}`}
+          onClick={() => { if (query !== lastQuery) submit() }}>
+          <IconPlayerPlayFilled />
+        </button>
       </div>
-      <QueryResult res={result}/>
+      <QueryResult res={result} />
     </div>
   )
 }
