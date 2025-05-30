@@ -9,6 +9,7 @@ function Schema({tables}: {tables: number[]}) {
   const [index, setIndex] = useState(0);
   const table = useMemo(()=> schema.tables[tables[index]], [index]);
 
+
   const icons: Record<ColumnType, JSX.Element> = {
     "integer": <IconNumbers height={18} />,
     "text": <IconLetterCase height={18} />,

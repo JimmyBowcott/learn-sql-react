@@ -44,7 +44,11 @@ function LevelPage({ level }: { level: Level }) {
     if (validateQuery()) {
       setResult("");
       const res: ApiResponse = await sendQuery();
-      setResult(res.result);
+      if (typeof res === "string") {
+        setResult(res);
+      } else {
+        setResult(res.result);
+      }
       if (res.success) {
         setUnlockedLevel(Math.max(unlockedLevel, level.id+1));
       }

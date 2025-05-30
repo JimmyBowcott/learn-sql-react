@@ -25,25 +25,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("authToken");
-    if (storedToken) setToken(storedToken);
+    if (!!storedToken) setToken(storedToken);
     const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
+    if (!!storedUser) setUser(JSON.parse(storedUser));
     const storedLevel = localStorage.getItem("level");
-    if (storedLevel) setUnlockedLevel(Number(storedLevel));
-    isFirstRender.current = false;
+    if (!!storedLevel) setUnlockedLevel(Number(storedLevel));
   }, []);
 
+  useEffect(()=>{
+    isFirstRender.current = false;
+  },[])
+
   useEffect(() => {
-    if (!isFirstRender.current) {
+    if (!isFirstRender.current && unlockedLevel > 1) {
       localStorage.setItem("level", String(unlockedLevel));
     }
   }, [unlockedLevel]);
 
   useEffect(() => {
-    if (unlockedLevel) {
+    if (!user.isGuest) {
       localStorage.setItem("user", JSON.stringify(user));
     }
-  }, [unlockedLevel]);
+  }, [user, user.isGuest]);
 
   useEffect(() => {
     if (token) {
