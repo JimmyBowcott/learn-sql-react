@@ -3,20 +3,27 @@ import QueryBox from "../components/level/QueryBox.tsx";
 import QueryResult from "../components/level/QueryResult.tsx";
 import Schema from "../components/level/Schema.tsx";
 import type { Level } from "../types.ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../api.ts";
 import { useAuth } from "../context/AuthContext.tsx";
+import { useNavigate } from "react-router";
 
 interface ApiResponse {
   success: boolean,
   result: any
 }
 
-function LevelPage({ level }: { level: Level }) {
+function LevelPage({ level, isLastLevel }: { level: Level, isLastLevel: boolean }) {
   const [lastQuery, setLastQuery] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [result, setResult] = useState<any>("");
   const { unlockedLevel, setUnlockedLevel } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    setQuery("");
+    setResult("");
+  },[level.id])
 
   const validateQuery = () => {
     if (!query.endsWith(";")) {
@@ -56,7 +63,12 @@ function LevelPage({ level }: { level: Level }) {
   }
 
   return (
-    <div className="flex flex-col gap-8 max-w-[900px] w-full items-center">
+    <div className="flex flex-col gap-8 max-w-[900px] w-full items-center relative">
+      {!isLastLevel && <button
+        className={`absolute top-0 right-0 text-stone-800 cursor-pointer ${level.id<unlockedLevel ? "bg-green-500" : "bg-stone-700"} px-2 p-1 rounded-lg`}
+        onClick={()=>{if (level.id<unlockedLevel) navigate(`/levels?i=${level.id+1}`)}}>
+        {"Next level ->"}
+      </button>}
       <div className="flex flex-col items-center">
         <h1 className="text-2xl font-bold">Level {level.id}</h1>
         <p>{level.description}</p>
