@@ -12,13 +12,16 @@ type AuthContextType = {
   user: User,
   unlockedLevel: number,
   setUnlockedLevel: Dispatch<SetStateAction<number>>,
-  isAuthenticated: boolean;
+  isAuthenticated: boolean,
+  login: (username: string, level: number) => void
 };
+
+const defaultUser: User = { token: "", isGuest: true, logout: ()=>{} }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User>({ token: "", isGuest: true, logout: ()=>{} });
+  const [user, setUser] = useState<User>(defaultUser);
   const [unlockedLevel, setUnlockedLevel] = useState<number>(1);
   const isFirstRender = useRef(true);
 
@@ -45,11 +48,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [user, user.isGuest]);
 
+  const logout = () => {
+    setUser(defaultUser);
+    setUnlockedLevel(1);
+  }
+ 
+  const login = (username: string, level: number) => {
+    setUser({ username, token: "", isGuest: false, logout})
+    setUnlockedLevel(Math.max(unlockedLevel, level))
+  }
+
   const value = {
     user,
     unlockedLevel,
     setUnlockedLevel,
     isAuthenticated: !!user && !!user.token && !!user.isGuest,
+    login,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

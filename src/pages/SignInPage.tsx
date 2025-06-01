@@ -34,7 +34,7 @@ function SignInPage() {
   const [usernameError, setUsernameError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const { user } = useAuth();
+  const { user, login } = useAuth();
   const query = new URLSearchParams(useLocation().search)
   const isSigningUp = Boolean(query.get("new"))
   const navigate = useNavigate();
@@ -61,7 +61,8 @@ function SignInPage() {
 
   const signIn = async () => {
     try {
-      await api.post("/signin", { name: username, pass: password })
+      const res = await api.post("/signin", { name: username, pass: password })
+      login(res.data.username, res.data.level) 
     } catch (error: any) {
       if (error.response.status === 400 || error.response.status === 401) {
         setErrorMessage("Incorrect username or password")
