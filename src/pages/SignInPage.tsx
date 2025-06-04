@@ -62,7 +62,7 @@ function SignInPage() {
   const signIn = async () => {
     try {
       const res = await api.post("/signin", { name: username, pass: password })
-      login(res.data.username, res.data.level) 
+      login(res.data) 
     } catch (error: any) {
       if (error.response.status === 400 || error.response.status === 401) {
         setErrorMessage("Incorrect username or password")

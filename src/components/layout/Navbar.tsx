@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <div className="flex flex-row text-center items-center justify-between h-14 px-4 w-full bg-stone-800 shadow-xl">
@@ -12,7 +12,7 @@ function Navbar() {
         {user.isGuest ?
           <button className="hover:underline cursor-pointer" onClick={() => navigate("/sign-in")}>Sign in</button>
           :
-          <button className="hover:underline cursor-pointer" onClick={() => user.logout()}>Sign out</button>
+          <button className="hover:underline cursor-pointer" onClick={() => logout()}>Sign out</button>
         }
         <button className="text-xl font-bold cursor-pointer" onClick={() => navigate("/about")}>?</button>
       </div>

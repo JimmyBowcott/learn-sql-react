@@ -5,7 +5,6 @@ type User = {
   username?: string,
   token: string,
   isGuest: boolean,
-  logout: ()=>void
 }
 
 type AuthContextType = {
@@ -13,10 +12,11 @@ type AuthContextType = {
   unlockedLevel: number,
   setUnlockedLevel: Dispatch<SetStateAction<number>>,
   isAuthenticated: boolean,
-  login: (username: string, level: number) => void
+  login: (data: any) => void,
+  logout: () => void
 };
 
-const defaultUser: User = { token: "", isGuest: true, logout: ()=>{} }
+const defaultUser: User = { token: "", isGuest: true }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -51,11 +51,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setUser(defaultUser);
     setUnlockedLevel(1);
+    localStorage.removeItem("user");
+    localStorage.removeItem("level");
   }
- 
-  const login = (username: string, level: number) => {
-    setUser({ username, token: "", isGuest: false, logout})
-    setUnlockedLevel(Math.max(unlockedLevel, level))
+
+  const login = (data: any) => {
+    console.log(data);
+    setUser({ username: data.username, token: data.token, isGuest: false});
+    setUnlockedLevel(data.level);
   }
 
   const value = {
@@ -64,6 +67,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUnlockedLevel,
     isAuthenticated: !!user && !!user.token && !!user.isGuest,
     login,
+    logout,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
