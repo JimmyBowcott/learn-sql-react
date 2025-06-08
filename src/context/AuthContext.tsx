@@ -11,6 +11,7 @@ type AuthContextType = {
   user: User,
   unlockedLevel: number,
   setUnlockedLevel: Dispatch<SetStateAction<number>>,
+  setToken: (token: string)=>void,
   isAuthenticated: boolean,
   login: (data: any) => void,
   logout: () => void
@@ -26,9 +27,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = sessionStorage.getItem("user");
     if (!!storedUser) setUser(JSON.parse(storedUser));
-    const storedLevel = localStorage.getItem("level");
+    const storedLevel = sessionStorage.getItem("level");
     if (!!storedLevel) setUnlockedLevel(Number(storedLevel));
   }, []);
 
@@ -38,21 +39,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!isFirstRender.current && unlockedLevel > 1) {
-      localStorage.setItem("level", String(unlockedLevel));
+      sessionStorage.setItem("level", String(unlockedLevel));
     }
   }, [unlockedLevel]);
 
   useEffect(() => {
     if (!user.isGuest) {
-      localStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("user", JSON.stringify(user));
     }
   }, [user, user.isGuest]);
 
   const logout = () => {
     setUser(defaultUser);
     setUnlockedLevel(1);
-    localStorage.removeItem("user");
-    localStorage.removeItem("level");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("level");
   }
 
   const login = (data: any) => {
@@ -61,11 +62,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUnlockedLevel(data.level);
   }
 
+  const setToken = (token: string)  => {
+    setUser({...user, token})
+  }
+
   const value = {
     user,
     unlockedLevel,
     setUnlockedLevel,
     isAuthenticated: !!user && !!user.token && !!user.isGuest,
+    setToken,
     login,
     logout,
   };

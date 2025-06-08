@@ -10,15 +10,18 @@ import { useNavigate } from "react-router";
 
 interface ApiResponse {
   success: boolean,
-  result: any
+  result: any,
+  token: string
 }
 
 function LevelPage({ level, isLastLevel }: { level: Level, isLastLevel: boolean }) {
   const [lastQuery, setLastQuery] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [result, setResult] = useState<any>("");
-  const { unlockedLevel, setUnlockedLevel } = useAuth();
+  const { user, unlockedLevel, setUnlockedLevel, setToken } = useAuth();
   const navigate = useNavigate();
+
+  console.log(user);
 
   useEffect(()=>{
     setQuery("");
@@ -35,7 +38,11 @@ function LevelPage({ level, isLastLevel }: { level: Level, isLastLevel: boolean 
 
   const sendQuery = async () => {
     try {
-      const res = await api.post("/submit", { query, level: level.id })
+      const res = await api.post("/submit",
+        { query, level: level.id },
+        {headers: {
+          "Authorization": `Bearer ${user.token || ""}`,
+        }})
       return res.data
     } catch (error: any) {
       if (error.response.status === 400) {
@@ -50,14 +57,17 @@ function LevelPage({ level, isLastLevel }: { level: Level, isLastLevel: boolean 
     setLastQuery(query);
     if (validateQuery()) {
       setResult("");
-      const res: ApiResponse = await sendQuery();
+
+      const res: ApiResponse | string = await sendQuery();
+
       if (typeof res === "string") {
         setResult(res);
       } else {
         setResult(res.result);
-      }
-      if (res.success) {
-        setUnlockedLevel(Math.max(unlockedLevel, level.id+1));
+        if (res.success && level.id == unlockedLevel) {
+          setToken(res.token)
+          setUnlockedLevel(level.id+1);
+        }
       }
     }
   }
