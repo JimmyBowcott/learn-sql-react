@@ -57,7 +57,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const login = (data: any) => {
-    console.log(data);
     setUser({ username: data.username, token: data.token, isGuest: false});
     setUnlockedLevel(data.level);
   }

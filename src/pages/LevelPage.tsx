@@ -4,9 +4,9 @@ import QueryResult from "../components/level/QueryResult.tsx";
 import Schema from "../components/level/Schema.tsx";
 import type { Level } from "../types.ts";
 import { useEffect, useState } from "react";
-import api from "../api.ts";
 import { useAuth } from "../context/AuthContext.tsx";
 import { useNavigate } from "react-router";
+import { useRequest } from "../hooks/useRequest.tsx";
 
 interface ApiResponse {
   success: boolean,
@@ -18,15 +18,14 @@ function LevelPage({ level, isLastLevel }: { level: Level, isLastLevel: boolean 
   const [lastQuery, setLastQuery] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [result, setResult] = useState<any>("");
-  const { user, unlockedLevel, setUnlockedLevel, setToken } = useAuth();
+  const { unlockedLevel, setUnlockedLevel, setToken } = useAuth();
   const navigate = useNavigate();
+  const { request } = useRequest();
 
-  console.log(user);
-
-  useEffect(()=>{
+  useEffect(() => {
     setQuery("");
     setResult("");
-  },[level.id])
+  }, [level.id])
 
   const validateQuery = () => {
     if (!query.endsWith(";")) {
@@ -38,12 +37,8 @@ function LevelPage({ level, isLastLevel }: { level: Level, isLastLevel: boolean 
 
   const sendQuery = async () => {
     try {
-      const res = await api.post("/submit",
-        { query, level: level.id },
-        {headers: {
-          "Authorization": `Bearer ${user.token || ""}`,
-        }})
-      return res.data
+      const res = await request("post", "/submit", { query, level: level.id });
+      return res
     } catch (error: any) {
       if (error.response.status === 400) {
         return error.response.data
@@ -66,7 +61,7 @@ function LevelPage({ level, isLastLevel }: { level: Level, isLastLevel: boolean 
         setResult(res.result);
         if (res.success && level.id == unlockedLevel) {
           setToken(res.token)
-          setUnlockedLevel(level.id+1);
+          setUnlockedLevel(level.id + 1);
         }
       }
     }
@@ -75,8 +70,8 @@ function LevelPage({ level, isLastLevel }: { level: Level, isLastLevel: boolean 
   return (
     <div className="flex flex-col gap-8 max-w-[900px] w-full items-center relative">
       {!isLastLevel && <button
-        className={`absolute top-0 right-0 text-stone-800 cursor-pointer ${level.id<unlockedLevel ? "bg-green-500" : "bg-stone-700"} px-2 p-1 rounded-lg`}
-        onClick={()=>{if (level.id<unlockedLevel) navigate(`/levels?i=${level.id+1}`)}}>
+        className={`absolute top-0 right-0 text-stone-800 cursor-pointer ${level.id < unlockedLevel ? "bg-green-500" : "bg-stone-700"} px-2 p-1 rounded-lg`}
+        onClick={() => { if (level.id < unlockedLevel) navigate(`/levels?i=${level.id + 1}`) }}>
         {"Next level ->"}
       </button>}
       <div className="flex flex-col items-center">
