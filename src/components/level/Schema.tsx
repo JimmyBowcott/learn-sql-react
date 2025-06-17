@@ -5,15 +5,19 @@ import type { JSX } from "react/jsx-runtime";
 
 type ColumnType = "integer" | "text" | "boolean"
 
-function Schema({tables}: {tables: number[]}) {
-  const [index, setIndex] = useState(0);
-  const table = useMemo(()=> schema.tables[tables[index]], [index]);
-
+function Schema({ tables, addText }: { tables: number[], addText: (text: string) => void }) {
+  const [index, setIndex] = useState<number>(1);
+  const table = useMemo(() => schema.tables[index], [index]);
+  const [dropDownVisible, setDropDownVisible] = useState<boolean>(false);
 
   const icons: Record<ColumnType, JSX.Element> = {
     "integer": <IconNumbers height={18} />,
     "text": <IconLetterCase height={18} />,
     "boolean": <IconCheckbox height={18} />
+  }
+
+  const toggleDropDown = () => {
+    setDropDownVisible(!dropDownVisible);
   }
 
   const getIcon = (type: string) => {
@@ -23,15 +27,39 @@ function Schema({tables}: {tables: number[]}) {
   }
 
   return (
-    <div className="flex flex-col p-4 gap-4 border-1 border-stone-600">
-      <div className="flex justify-around">
-        <h2 className="font-bold text-lg cursor-pointer">{table.name}</h2>
+    <div className="flex flex-col pt-4 w-60 gap-4 border-1 border-stone-600">
+      <div className="relative flex justify-around">
+        <button
+          className="font-bold text-lg cursor-pointer"
+          onClick={toggleDropDown}
+        >
+          {table.name}
+        </button>
+        {tables.length > 1 && dropDownVisible &&
+          <div className="absolute flex flex-col items-center top-8 bg-white rounded-sm w-36 text-stone-900">
+            {tables.map((n) => (
+              <button
+                key={`table-${schema.tables[n].name}`}
+                className="cursor-pointer"
+                onClick={() => { setIndex(n); toggleDropDown(); }}
+              >
+                {schema.tables[n].name}
+              </button>
+            ))}
+          </div>
+        }
       </div>
       <div className="flex flex-col gap-2 justify-center mx-auto">
         {table.columns.map((col, key) => (
           <div key={`col-${key}`} className="flex items-center gap-1">
             {getIcon(col.schema)}
-            <p>{col.name}</p>
+            <button
+              key={`col-${key}-${col.name}`}
+              className="cursor-pointer"
+              onClick={() => addText(col.name)}
+            >
+              {col.name}
+            </button>
           </div>
         ))
         }

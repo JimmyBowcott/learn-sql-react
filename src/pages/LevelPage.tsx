@@ -18,18 +18,39 @@ function LevelPage({ level, isLastLevel }: { level: Level, isLastLevel: boolean 
   const [lastQuery, setLastQuery] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [result, setResult] = useState<any>("");
+  const [lastInputWasButton, setLastInputWasButton] = useState<boolean>(false);
   const { unlockedLevel, setUnlockedLevel, setToken } = useAuth();
   const navigate = useNavigate();
   const { request } = useRequest();
 
+  useEffect(()=>{
+    const handleCtrlEnter = (e: any) => {
+      if (e.key === "Enter" && e.ctrlKey && query !== lastQuery) {
+        submit();
+      }
+    }
+    window.addEventListener("keydown", handleCtrlEnter);
+    return ()=> window.removeEventListener("keydown", handleCtrlEnter);
+  })
+
   useEffect(() => {
     setQuery("");
     setResult("");
-  }, [level.id])
+  }, [level.id]);
+
+  const addText = (text: string) => {
+    if (lastInputWasButton) {
+      setQuery((prev)=>prev+", ");
+    } else if (query.length > 0 && query[query.length-1] !== " ") {
+      setQuery((prev)=>prev+" ");
+    }
+    setQuery((prev)=>prev+text);
+    setLastInputWasButton(true);
+  }
 
   const validateQuery = () => {
     if (!query.endsWith(";")) {
-      setResult("SQL statements must end with a ;")
+      setResult("SQL statements must end with a ;");
       return false
     }
     return true
@@ -80,8 +101,8 @@ function LevelPage({ level, isLastLevel }: { level: Level, isLastLevel: boolean 
       </div>
       <div className="flex flex-col gap-2 w-full">
         <div className="flex flex-row w-full">
-          <QueryBox text={query} setText={setQuery} />
-          <Schema tables={level.tables} />
+          <QueryBox text={query} setText={setQuery} setLastInputWasButton={setLastInputWasButton} />
+          <Schema tables={level.tables} addText={addText} />
         </div>
         <button
           className={`mr-auto cursor-pointer ${query === lastQuery ? "text-stone-600" : ""}`}

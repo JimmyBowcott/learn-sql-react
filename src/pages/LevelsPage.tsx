@@ -18,7 +18,7 @@ function LevelsPage() {
   const { request } = useRequest();
 
   useEffect(() => {
-    if (index >= levels.length || index > unlockedLevel) {
+    if (index < 0 || index > levels.length || index > unlockedLevel) {
       navigate("/levels");
     }
   }, [index])
