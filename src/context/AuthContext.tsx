@@ -27,9 +27,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    const storedUser = sessionStorage.getItem("user");
+    const storedUser = localStorage.getItem("user");
     if (!!storedUser) setUser(JSON.parse(storedUser));
-    const storedLevel = sessionStorage.getItem("level");
+    const storedLevel = localStorage.getItem("level");
     if (!!storedLevel) setUnlockedLevel(Number(storedLevel));
   }, []);
 
@@ -39,21 +39,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!isFirstRender.current && unlockedLevel > 1) {
-      sessionStorage.setItem("level", String(unlockedLevel));
+      localStorage.setItem("level", String(unlockedLevel));
     }
   }, [unlockedLevel]);
 
   useEffect(() => {
-    if (!user.isGuest) {
-      sessionStorage.setItem("user", JSON.stringify(user));
+    if (!isFirstRender.current) {
+      localStorage.setItem("user", JSON.stringify(user));
     }
-  }, [user, user.isGuest]);
+  }, [user]);
 
   const logout = () => {
     setUser(defaultUser);
     setUnlockedLevel(1);
-    sessionStorage.removeItem("user");
-    sessionStorage.removeItem("level");
+    localStorage.removeItem("user");
+    localStorage.removeItem("level");
   }
 
   const login = (data: any) => {

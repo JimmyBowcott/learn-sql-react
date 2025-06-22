@@ -80,7 +80,7 @@ function LevelPage({ level, isLastLevel }: { level: Level, isLastLevel: boolean 
         setResult(res);
       } else {
         setResult(res.result);
-        if (res.success && level.id == unlockedLevel) {
+        if (res.success && level.id === unlockedLevel) {
           setToken(res.token)
           setUnlockedLevel(level.id + 1);
         }

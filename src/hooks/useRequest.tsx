@@ -28,7 +28,7 @@ export function useRequest() {
         throw err.response?.data || err
       }
     },
-    []
+    [user, user.token]
   )
 
   return { request }
