@@ -6,7 +6,7 @@ import type { JSX } from "react/jsx-runtime";
 type ColumnType = "integer" | "text" | "boolean"
 
 function Schema({ tables, addText }: { tables: number[], addText: (text: string) => void }) {
-  const [index, setIndex] = useState<number>(1);
+  const [index, setIndex] = useState<number>(tables[0]);
   const table = useMemo(() => schema.tables[index], [index]);
   const [dropDownVisible, setDropDownVisible] = useState<boolean>(false);
 
