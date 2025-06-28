@@ -61,9 +61,13 @@ function LevelPage({ level, isLastLevel }: { level: Level, isLastLevel: boolean 
       const res = await request("post", "/submit", { query, level: level.id });
       return res
     } catch (error: any) {
-      if (error.response.status === 400) {
-        return error.response.data
-      } else {
+      try {
+        if (error.startsWith("Failed to execute query: pq: ")) {
+          return error.slice(29,30).toUpperCase() + error.slice(30,) + ".";
+        } else {
+          return "An error has occured. Please try again later."
+        }
+      } catch (err) {
         return "An error has occured. Please try again later."
       }
     }

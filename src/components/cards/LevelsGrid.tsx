@@ -3,7 +3,7 @@ import LevelCard from "./LevelCard";
 
 function LevelsGrid({ levels }: { levels: Level[] }) {
   return (
-    <div className="flex flex-row flex-wrap gap-2">
+    <div className="flex flex-row flex-wrap gap-4">
       {levels.map((level, key) => (
         <LevelCard key={`level-${key}`} level={level} />
       ))

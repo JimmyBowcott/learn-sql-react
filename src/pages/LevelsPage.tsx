@@ -36,7 +36,12 @@ function LevelsPage() {
     <AppShell>
       {levels.length == 0 && <LoadingSpinner />}
       {levels.length > 0 && index > 0 && <LevelPage level={levels[index - 1]} isLastLevel={index === levels.length} />}
-      {levels.length > 0 && index == 0 && <LevelsGrid levels={levels} />}
+      {levels.length > 0 && index == 0 &&
+        <div className="flex flex-col gap-8 items-center">
+          <h1 className="font-bold text-4xl">All Levels</h1>
+          <LevelsGrid levels={levels} />
+        </div>
+      }
     </AppShell>
   )
 }

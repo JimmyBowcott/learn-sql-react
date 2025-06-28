@@ -42,7 +42,7 @@ function SignInPage() {
 
   useEffect(() => {
     if (!user.isGuest) navigate("/");
-  }, [])
+  }, [user])
 
   useEffect(() => {
     setPassword("");
