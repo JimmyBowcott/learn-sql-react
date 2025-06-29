@@ -1,5 +1,5 @@
 # Learn SQL 
-Learn SQL with Pokêmon - Execute queries and see the result in real time!
+Learn SQL with Pokémon - Execute queries and see the result in real time!
 
 Golang API here: https://github.com/JimmyBowcott/learn-sql
 
